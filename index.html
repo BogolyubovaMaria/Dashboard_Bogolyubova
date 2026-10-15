@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Библиотечный дашборд</title>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="toolbar">
+  <div class="toolbar-logo">Литература · панель</div>
+  <div class="toolbar-actions">
+    <button class="toolbar-btn" data-add="todo">
+      <i data-lucide="list-todo"></i><span>Список дел</span>
+    </button>
+    <button class="toolbar-btn" data-add="weather">
+      <i data-lucide="cloud-sun"></i><span>Погода</span>
+    </button>
+    <button class="toolbar-btn" data-add="currency">
+      <i data-lucide="coins"></i><span>Курсы валют</span>
+    </button>
+  </div>
+</header>
+
+<main class="dashboard" id="dashboard">
+
+  <!-- 1. Секундомер -->
+  <div class="widget" data-widget-id="stopwatch">
+    <div class="widget-header">
+      <span class="widget-title">Сессия чтения</span>
+      <div class="widget-header-right">
+        <div class="widget-icon"><i data-lucide="timer"></i></div>
+        <div class="widget-ctrls">
+          <button class="widget-ctrl" data-ctrl="collapse" title="Свернуть">−</button>
+          <button class="widget-ctrl delete" data-ctrl="delete" title="Удалить">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="widget-content">
+      <div id="stopwatch-display" class="stopwatch-display">00:00:00</div>
+      <div class="stopwatch-sub">читаю сейчас</div>
+      <div class="stopwatch-controls">
+        <button id="sw-toggle" class="btn btn-primary">Старт</button>
+        <button id="sw-reset" class="btn">Сброс</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. График -->
+  <div class="widget" data-widget-id="chart">
+    <div class="widget-header">
+      <span class="widget-title">Время чтения · 7 дней</span>
+      <div class="widget-header-right">
+        <div class="widget-icon"><i data-lucide="bar-chart-3"></i></div>
+        <div class="widget-ctrls">
+          <button class="widget-ctrl" data-ctrl="collapse" title="Свернуть">−</button>
+          <button class="widget-ctrl delete" data-ctrl="delete" title="Удалить">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="widget-content">
+      <div class="chart" id="chart"></div>
+      <div class="chart-details" id="chart-details">Нажми на столбик, чтобы увидеть записи</div>
+    </div>
+  </div>
+
+  <!-- 3. Поиск -->
+  <div class="widget" data-widget-id="search">
+    <div class="widget-header">
+      <span class="widget-title">Поиск книг</span>
+      <div class="widget-header-right">
+        <div class="widget-icon"><i data-lucide="search"></i></div>
+        <div class="widget-ctrls">
+          <button class="widget-ctrl" data-ctrl="collapse" title="Свернуть">−</button>
+          <button class="widget-ctrl delete" data-ctrl="delete" title="Удалить">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="widget-content">
+      <input type="text" id="book-search-input" class="search-input" placeholder="Название или автор...">
+      <div id="search-results" class="search-results">
+        <div class="search-hint">Введите минимум 3 символа</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Цель -->
+  <div class="widget" data-widget-id="goal">
+    <div class="widget-header">
+      <span class="widget-title">Цель на год</span>
+      <div class="widget-header-right">
+        <div class="widget-icon"><i data-lucide="target"></i></div>
+        <div class="widget-ctrls">
+          <button class="widget-ctrl" data-ctrl="collapse" title="Свернуть">−</button>
+          <button class="widget-ctrl delete" data-ctrl="delete" title="Удалить">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="widget-content">
+      <div class="goal-labels"><span>Прочитано</span><span>Цель</span></div>
+      <div class="goal-grid">
+        <div class="goal-stepper">
+          <button class="step-btn" data-type="current" data-delta="-1">−</button>
+          <div class="goal-number" id="goal-current">12</div>
+          <button class="step-btn" data-type="current" data-delta="1">+</button>
+        </div>
+        <span class="goal-slash">/</span>
+        <div class="goal-stepper">
+          <button class="step-btn" data-type="target" data-delta="-1">−</button>
+          <div class="goal-number" id="goal-target">20</div>
+          <button class="step-btn" data-type="target" data-delta="1">+</button>
+        </div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="goal-fill" style="width:60%"></div></div>
+      <div class="goal-footer">
+        <span id="goal-percent">60% выполнено</span>
+        <span id="goal-left">осталось 8</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Статус -->
+  <div class="widget" data-widget-id="status">
+    <div class="widget-header">
+      <span class="widget-title">Статус сервисов</span>
+      <div class="widget-header-right">
+        <div class="widget-icon"><i data-lucide="server"></i></div>
+        <div class="widget-ctrls">
+          <button class="widget-ctrl" data-ctrl="collapse" title="Свернуть">−</button>
+          <button class="widget-ctrl delete" data-ctrl="delete" title="Удалить">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="widget-content">
+      <div class="status-list">
+        <div class="status-item">
+          <span class="status-dot dot-green" id="st-openlib"></span>
+          <span class="status-name">Open Library</span>
+          <span class="status-value" id="st-openlib-val">проверка...</span>
+        </div>
+        <div class="status-item">
+          <span class="status-dot dot-green"></span>
+          <span class="status-name">Локальное хранилище</span>
+          <span class="status-value">ок</span>
+        </div>
+        <div class="status-item">
+          <span class="status-dot dot-yellow"></span>
+          <span class="status-name">Синхронизация</span>
+          <span class="status-value">ожидание</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Книга дня -->
+  <div class="widget" data-widget-id="book">
+    <div class="widget-header">
+      <span class="widget-title">Книга дня</span>
+      <div class="widget-header-right">
+        <div class="widget-icon"><i data-lucide="book-open"></i></div>
+        <div class="widget-ctrls">
+          <button class="widget-ctrl" data-ctrl="collapse" title="Свернуть">−</button>
+          <button class="widget-ctrl delete" data-ctrl="delete" title="Удалить">×</button>
+        </div>
+      </div>
+    </div>
+    <div class="widget-content">
+      <div class="book-display">
+        <div class="book-cover" id="random-cover"><i data-lucide="book"></i></div>
+        <div class="book-info">
+          <div class="book-title" id="random-title">Загрузка...</div>
+          <div class="book-author" id="random-author">...</div>
+          <a href="#" target="_blank" id="random-link" class="book-link">Найти в магазине</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="main.js"></script>
+</body>
+</html>
